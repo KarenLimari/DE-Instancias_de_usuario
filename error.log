@@ -1,0 +1,3 @@
+Error de formato JSON en la linea: {"nombre": "Nissy", "apellido": "Dell Casa", "email": "ndellcasa2@godaddy.com", "genero": "Female" - Expecting ',' delimiter: line 1 column 99 (char 98)
+Error de formato JSON en la linea: {"nombre": "Marj", "apellido": "Impy", email": "mimpy5@youku.com", "genero": "Non-binary"} - Expecting property name enclosed in double quotes: line 1 column 40 (char 39)
+Error de formato JSON en la linea: {"nombre": "Robena", "apellido": "Selcraig", "email": "rselcraig7@jugem.jp", "genero": Female} - Expecting value: line 1 column 88 (char 87)

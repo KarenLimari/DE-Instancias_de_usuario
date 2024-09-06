@@ -2,11 +2,37 @@ import json
 from usuario import Usuario
 
 #Función para procesar los usuarios en el archivo usuario.txt y captar errores
-def procesar_usuarios(usuario.txt, error.log):
+def procesar_usuarios(ruta_archivo = "usuarios.txt", archivo_log = "error.log"):
+    """
+    Procesa un archivo de usuarios en formato JSON, crea instancias de la clase `Usuario` 
+    y registra los errores en un archivo de log.
+
+    Lee el archivo especificado por `ruta_archivo` línea por línea, tratando de interpretar 
+    cada línea como un objeto JSON que representa un usuario. Si se encuentra un error de formato 
+    JSON o datos inválidos, se registra un mensaje de error en el archivo de log especificado por 
+    `archivo_log`. Los usuarios válidos se almacenan en una lista que se devuelve al final.
+
+    Parámetros
+    ----------
+    ruta_archivo : str, opcional
+        Ruta al archivo de entrada que contiene los datos de los usuarios en formato JSON. 
+        El valor predeterminado es "usuarios.txt".
+    archivo_log : str, opcional
+        Ruta al archivo de log donde se registrarán los errores encontrados durante el procesamiento. 
+        El valor predeterminado es "error.log".
+
+    Retorna
+    -------
+    list
+        Una lista de instancias de `Usuario` creadas a partir de las líneas válidas del archivo de entrada.
+    """
     usuarios = [] #Se crea esta lista vacía para almacenar los datos de los usuarios
 
-#Abre el archivo em modo leer
-    with open(usuario.txt, "r") as archivo:
+    #Método .close, sirve para cerrar el archivo y vaciarlo. Así mo hay repeticiñon en el registro de un mismo error.
+    open(archivo_log,"w").close
+
+    #Abre el archivo em modo leer
+    with open(ruta_archivo, "r") as archivo:
         for linea in archivo:   #Lee el archivo línea por línea
             
             try:
@@ -27,15 +53,20 @@ def procesar_usuarios(usuario.txt, error.log):
             
             except json.JSONDecodeError as e:
                 #Si hay un error con el formato JSON, registra el error en el archo log.
-                with open(error.log, "a") as log:
-                    log.write(f"Error de formato JSON en la línea: {linea.strip()} - {str(e)}\n")
+                with open(archivo_log, "a") as log:
+                    log.write(f"Error de formato JSON en la linea: {linea.strip()} - {str(e)}\n")
             except ValueError as e:
                 #Si faltan campos en la línea, registrar el error en el archivo log
-                with open(error.log, "a")as log:
-                    log.write(f"Datos inválidos en la línea: {linea.strip()} - {str(e)}\n")
-             except Exception as e:
+                with open(archivo_log, "a")as log:
+                    log.write(f"Datos inválidos en la linea: {linea.strip()} - {str(e)}\n")
+            except Exception as e:
                 #Cualqueir otro error inesperado registrar error en el archivo log
-                with open(error.log, "a")as log:
-                    log.write(f"Error inesperado al procesar la línea: {linea.strip()} - {str(e)}\n")
+                with open(archivo_log, "a")as log:
+                    log.write(f"Error inesperado al procesar la linea: {linea.strip()} - {str(e)}\n")
     #Retornar la lista de usuarios procesados de manera correcta
-    return usuarios            
+    return usuarios
+
+usuarios = procesar_usuarios()
+
+#Mostrar el número de usuarios que se procesaron correctamente
+print(f"Se procesaron correctamente {len(usuarios)} usuarios")

@@ -25,4 +25,17 @@ def procesar_usuarios(usuario.txt, error.log):
                 #Añadir usuario a la lista de usuarios
                 usuarios.append(usuario)
             
-            except
+            except json.JSONDecodeError as e:
+                #Si hay un error con el formato JSON, registra el error en el archo log.
+                with open(error.log, "a") as log:
+                    log.write(f"Error de formato JSON en la línea: {linea.strip()} - {str(e)}\n")
+            except ValueError as e:
+                #Si faltan campos en la línea, registrar el error en el archivo log
+                with open(error.log, "a")as log:
+                    log.write(f"Datos inválidos en la línea: {linea.strip()} - {str(e)}\n")
+             except Exception as e:
+                #Cualqueir otro error inesperado registrar error en el archivo log
+                with open(error.log, "a")as log:
+                    log.write(f"Error inesperado al procesar la línea: {linea.strip()} - {str(e)}\n")
+    #Retornar la lista de usuarios procesados de manera correcta
+    return usuarios            
